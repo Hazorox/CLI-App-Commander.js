@@ -1,15 +1,16 @@
 #!/usr/bin/env node
-
-import { Command } from "commander";
-import figlet from "figlet";
+const { Command } = require("commander");
+const figlet = require("figlet");
+const anki = require("../commands/anki");
 const app = new Command();
-
+let userName;
 app
   .name("JScripting")
   .description(
     "A random app made by hazorox ( On GitHub ) for educational purposes"
   )
   .version("1.0.0 Alpha")
+  .addCommand(anki)
   .command("setUser")
   .description("Let us know your name or else...")
   .argument("<string...>")
@@ -42,6 +43,7 @@ app
         `Welcome!\nWhat an interesting name, ${name}\nHope you enjoy your try!`
       );
     }
-    const userName = name;
+    userName = name;
   });
-app.parse();
+app.parse(process.argv);
+module.exports = { userName };
