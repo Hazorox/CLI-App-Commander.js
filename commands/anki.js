@@ -41,12 +41,27 @@ const anki = new Command("anki")
     const args = await editor({
       message: "Please enter your arguments in JSON object format",
     });
-    const parsedArgs = JSON.parse(args);
-    try {
-      const result = await invoke(port, action, 6, parsedArgs);
-      console.log(result);
-    } catch (err) {
-      console.error(err);
+
+    if (args != "" & args != {}) {
+      try {
+        const parsedArgs = JSON.parse(args);
+
+        try {
+          const result = await invoke(port, action, 6, parsedArgs);
+          console.log(result);
+        } catch (err) {
+          console.error(err);
+        }
+      } catch (err) {
+        console.log("Please enter your JSON object in correct format");
+      }
+    } else {
+      try {
+        const result = await invoke(port, action, 6);
+        console.log(result);
+      } catch (err) {
+        console.error(err);
+      }
     }
     // console.log(action,args,port)
     // console.log(action,args,port)
