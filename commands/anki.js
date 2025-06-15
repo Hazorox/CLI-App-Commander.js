@@ -1,6 +1,5 @@
 const { Command } = require("commander");
-const { json } = require("express");
-
+const { editor } = require("@inquirer/prompts");
 // Dealing with Anki ( Copied from the docs )
 const idk = require("xhr2");
 async function invoke(port, action, version, params = {}) {
@@ -36,26 +35,19 @@ async function invoke(port, action, version, params = {}) {
 const anki = new Command("anki")
   .description("Connect to AnkiConnect extension to modify your decks")
   .argument("<action>", "Action to do in Anki")
-  .argument("[args]", "Arguments of the action")
+  // .argument("[args]", "Arguments of the action")
   .argument("[port]", "port lol", 8765)
-  .action(async (action, args, port) => {
-    let parsedArgs = {};
-    if (args) {
-      try {
-        parsedArgs = JSON.parse(args);
-      } catch (err) {
-        console.log(
-          "ERROR: Failed to parse the arguments.\nPlease make sure the object of arguments is correctly entered as a JSON string."
-        );
-      }
-    }
+  .action(async (action, port) => {
+    const args = await editor({
+      message: "Please enter your arguments in JSON object format",
+    });
+    const parsedArgs = JSON.parse(args);
     try {
-      const result = await invoke(port, action, 6, parsedArgs)
-      console.log(result)
+      const result = await invoke(port, action, 6, parsedArgs);
+      console.log(result);
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-    // console.log(result)
     // console.log(action,args,port)
     // console.log(action,args,port)
   });
