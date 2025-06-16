@@ -21,7 +21,7 @@ const files = new Command()
       process.exit(1);
     }
 
-    if (!fs.existsSync(file)) {
+    if (!fs.existsSync(file) & (action == "-r")) {
       console.log("File not found");
       process.exit(1);
     }
