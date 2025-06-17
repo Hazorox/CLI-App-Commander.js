@@ -3,6 +3,7 @@ const { Command } = require("commander");
 const figlet = require("figlet");
 const anki = require("../commands/anki");
 const files = require("../commands/files");
+const csvTable = require("../commands/csv_table")
 const app = new Command();
 let userName;
 app
@@ -13,6 +14,7 @@ app
   .version("1.0.0 Alpha")
   .addCommand(anki)
   .addCommand(files)
+  .addCommand(csvTable)
   .command("setUser")
   .description("Let us know your name or else...")
   .argument("<string...>")
