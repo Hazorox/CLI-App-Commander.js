@@ -11,6 +11,7 @@ const handleErr = (err) => {
 
 const files = new Command()
   .name("files")
+  .description("Read/Write")
   .argument("[write]", "write to a file")
   .argument("[read]", "read file's contents")
   .option("-a, --append", "Append content to file")

@@ -1,4 +1,3 @@
-const j2h = require("node-json2html");
 const fs = require("fs");
 const { editor } = require("@inquirer/prompts");
 const { Command } = require("commander");
@@ -22,38 +21,42 @@ function convertJSONToTable(jsonData) {
   table += "</tbody></table>";
 }
 
-const csvTable = new Command("csvTable").action(async (options) => {
-  const input = await editor({
-    message: "Please enter your input in CSV format",
-  });
+const csvTable = new Command("csvTable")
+  .description("Convert pasted CSV into an HTML Table")
+  .action(async (_) => {
+    const input = await editor({
+      message: "Please enter your input in CSV format",
+    });
 
-  try {
-    csv({
-      output: "json",
-    })
-      .fromString(input)
-      .then((data) => {
-        // I admit my failure here....
-        // I used AI to define the rows and headers
+    try {
+      csv({
+        output: "json",
+      })
+        .fromString(input)
+        .then((data) => {
+          // I admit my failure here....
+          // I used AI to define the rows and headers
 
-        const headers = Object.keys(data[0]);
+          const headers = Object.keys(data[0]);
 
-        // Create the header row
-        let headerRow = headers.map((header) => `<th>${header}</th>`).join("");
+          // Create the header row
+          let headerRow = headers
+            .map((header) => `<th>${header}</th>`)
+            .join("");
 
-        // Create rows for each object in data
-        let rows = data
-          .map((row) => {
-            let cells = headers
-              .map((header) => `<td>${row[header]}</td>`)
-              .join("");
-            return `<tr>${cells}</tr>`;
-          })
-          .join("");
+          // Create rows for each object in data
+          let rows = data
+            .map((row) => {
+              let cells = headers
+                .map((header) => `<td>${row[header]}</td>`)
+                .join("");
+              return `<tr>${cells}</tr>`;
+            })
+            .join("");
 
-        fs.writeFile(
-          "./result.html",
-          `<table border="1" cellpadding="5" cellspacing="0">
+          fs.writeFile(
+            "./result.html",
+            `<table border="1" cellpadding="5" cellspacing="0">
       <thead>
         <tr>${headerRow}</tr>
       </thead>
@@ -61,23 +64,22 @@ const csvTable = new Command("csvTable").action(async (options) => {
         ${rows}
       </tbody>
     </table>`,
-          (err) => {
-            if (err) {
-              console.error("Error writing file:", err);
-              return;
+            (err) => {
+              if (err) {
+                console.error("Error writing file:", err);
+                return;
+              }
+              console.log("File written successfully!");
             }
-            console.log("File written successfully!");
-          }
-        );
-        chalk.green("Success!");
-      });
-  } catch (err) {
-    chalk.red("Error in operation\n");
-    process.exit(1);
-  }
-});
+          );
+          chalk.green("Success!");
+        });
+    } catch (err) {
+      chalk.red("Error in operation\n");
+      process.exit(1);
+    }
+  });
 
 module.exports = csvTable;
-
 
 // No comments at all lol

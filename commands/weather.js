@@ -9,6 +9,7 @@ const failed = (msg = "Error in fetching data") => {
   process.exit(1);
 };
 const weather = new Command("weather")
+  .description("Get weather status")
   .requiredOption("-c, --city <string...>", "City to fetch its weather.")
   .option(
     "-m, --mode <string...>",
@@ -58,17 +59,19 @@ const weather = new Command("weather")
           `Maximum Temperature : ${chalk.red(dayData.maxtemp_c)}`,
           `Minimum Temperature : ${chalk.blue(dayData.mintemp_c)}`,
           `Average Humidity : ${chalk.green(dayData.avghumidity)}`,
-          `Chance of Rain : ${chalk.yellowBright(dayData.daily_chance_of_rain + "%")}`,
+          `Chance of Rain : ${chalk.yellowBright(
+            dayData.daily_chance_of_rain + "%"
+          )}`,
           `UV : ${chalk.magenta(dayData.uv)}`,
         ];
-        to_print.map(txt => {
-            console.log("\n", txt)
-        })
-        let hr = ""
-        for (let i = 0; i<30; i++){
-            hr = hr + "----"
+        to_print.map((txt) => {
+          console.log("\n", txt);
+        });
+        let hr = "";
+        for (let i = 0; i < 30; i++) {
+          hr = hr + "----";
         }
-        console.log(hr)
+        console.log(hr);
       });
     }
   });
