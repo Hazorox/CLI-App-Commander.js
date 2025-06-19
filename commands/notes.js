@@ -19,6 +19,10 @@ const verifyNumber = (num) => {
     process.exit(1);
   }
 };
+
+
+//TODO: Add auto increment on deleting row
+
 const notes = new Command("notes")
   .description("Make some to do notes!")
   .option("-n, --new", "Create a new note.")
@@ -77,7 +81,8 @@ const notes = new Command("notes")
               head: ["ID", "Text", "Status"],
             });
             result.rows.forEach((row) => {
-              table.push([row.id, row.text, row.status]);
+                const status = row.status == "DONE" ? chalk.green("Done") : chalk.yellow("Pending")
+              table.push([row.id, row.text, status]);
             });
             console.log(table.toString());
           } else {
