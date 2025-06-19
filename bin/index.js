@@ -3,8 +3,9 @@ const { Command } = require("commander");
 const figlet = require("figlet");
 const anki = require("../commands/anki");
 const files = require("../commands/files");
-const csvTable = require("../commands/csv_table")
-const weather = require("../commands/weather")
+const csvTable = require("../commands/csv_table");
+const weather = require("../commands/weather");
+const notes = require("../commands/notes");
 const app = new Command();
 let userName;
 app
@@ -14,6 +15,7 @@ app
   )
   .version("1.0.0 Alpha")
   .addCommand(anki)
+  .addCommand(notes)
   .addCommand(weather)
   .addCommand(files)
   .addCommand(csvTable)
